@@ -2,6 +2,8 @@ class Elevator {
   constructor (config) {
     this.id = config.id
     this.currentFloor = 1
+    this.maxFloor = config.maxFloor
+    this.minFloor = 1
     this.destinationFloor = null
     this.trips = 0
     this.floorsPassed = 0
@@ -9,6 +11,9 @@ class Elevator {
     this.moveInterval = null
     // Could also be a boolean but using a string for clarity
     this.direction = Elevator.DIRECTIONS.up
+
+    this.moveFloor = this.moveFloor.bind(this);
+    this.toggleDoor = this.toggleDoor.bind(this);
   }
 
   static DIRECTIONS = {
@@ -18,16 +23,24 @@ class Elevator {
 
   // Send this elevator to a destination floor.
   goToFloor (destinationFloor) {
+    console.log(`Elevator ${this.id} moving to floor ${destinationFloor}`)
+    // Dont' move and open doors if request is for current floor
+    if (destinationFloor === this.currentFloor) {
+        this.toggleDoor()
+        return
+    }
+
     // set destination floor.
     this.destinationFloor = destinationFloor
+    this.setDirection()
 
     if (!this.moveInterval) {
       this.moveInterval = setInterval(this.moveFloor, 100)
     }
   }
 
-  setDirection (destinationFloor) {
-    if (destinationFloor > this.currentFloor) {
+  setDirection () {
+    if (this.destinationFloor > this.currentFloor) {
       this.direction = Elevator.DIRECTIONS.up
     }
     else {
@@ -38,32 +51,40 @@ class Elevator {
   // Open or close elevator doors
   toggleDoor () {
     if (this.doorOpen) {
-      console.log('Door Closing')
+      console.error('Door Closing')
+      this.doorOpen = false 
     }
     else {
-      console.log('Door Opening')
-      setTimeout(this.toggleDoor, 100)
+      console.error('Door Opening')
+      this.doorOpen = true
+      setTimeout(this.toggleDoor, 1000)
     }
   }
 
   // Move the elevator to the next floor
   moveFloor () {
-    console.log('Moving Floor')
-    debugger;
     const movementVector = this.direction === Elevator.DIRECTIONS.up ? 1 : -1
-    console.log(movementVector)
-    this.currentFloor = this.currentFloor + (movement)
-    // this.reportCurrentFloor()
-    console.log(this.currentFloor)
+    const nextFloor = this.currentFloor + (movementVector)
+    // dont move beyond our boundaries
+    if (nextFloor >= this.maxFloor || nextFloor <= this.minFloor) {
+      this.stopMoving();
+    }
+    this.currentFloor = nextFloor;
+    this.reportCurrentFloor()
     if (this.currentFloor === this.destinationFloor) {
-        this.destinationFloor = null
-        clearInterval(this.moveInterval)
-        this.toggleDoor()
+      this.stopMoving();
     }
   }
 
+  stopMoving () {
+    this.destinationFloor = null
+    clearInterval(this.moveInterval)
+    this.moveInterval = null
+    this.toggleDoor()
+  }
+
   reportCurrentFloor () {
-    consolr.log(`Elevator ${this.id} arrived at floor ${this.currentFloor}`)
+    console.log(`Elevator ${this.id} arrived at floor ${this.currentFloor}`)
   }
 
 }

@@ -12,7 +12,8 @@ class ElevatorControl {
   initElevators (elevatorCount) {
     for (let x = 0; x < elevatorCount; x++) {
       let elevator = new Elevator({
-        id: this.elevators.length
+        id: this.elevators.length,
+        maxFloor: this.maxFloor
       })
       this.elevators.push(elevator)
     }
