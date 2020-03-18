@@ -95,4 +95,9 @@ class Elevator {
     console.log(`Elevator ${this.id} arrived at floor ${this.currentFloor}`)
   }
 
+  // After 100 trips elevator will go into maintenance mode
+  enterMaintanceMode() {
+
+  }
+
 }
