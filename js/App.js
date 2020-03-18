@@ -2,7 +2,7 @@
 let controller
 (() => {
   controller = new ElevatorControl({
-    maxFloor: 10,
+    floors: 10,
     elevatorCount: 2
   })
   // init ElevatorControl

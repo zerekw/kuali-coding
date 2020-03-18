@@ -5,6 +5,9 @@ class Elevator {
     this.maxFloor = config.maxFloor
     this.minFloor = 1
     this.destinationFloor = null
+    // floors to stop at if moving
+    // could probably change `destinationFloor` to `destinationFloors` and have only 1 variable to worry about
+    this.stops = []
     this.trips = 0
     this.floorsPassed = 0
     this.doorOpen = false
@@ -35,7 +38,7 @@ class Elevator {
     this.setDirection()
 
     if (!this.moveInterval) {
-      this.moveInterval = setInterval(this.moveFloor, 100)
+      this.moveInterval = setInterval(this.moveFloor, 10000)
     }
   }
 
