@@ -1,3 +1,6 @@
+/**
+ * Elevators are meant to be "dumb". They go to a floor and open/close their doors.
+ */
 class Elevator {
   constructor (config) {
     this.id = config.id

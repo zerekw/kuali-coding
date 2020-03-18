@@ -1,3 +1,6 @@
+/**
+ * Manages requests for elevators and sends appropriate elevator to the requested floor.
+ */
 class ElevatorControl {
   constructor (config = {}) {
     this.minFloor = 1
@@ -20,14 +23,14 @@ class ElevatorControl {
     }
   }
 
+  // check for elevator on that floor first
+  // Check for moving elevators
+  // check for closest elevator
   findClosestElevator (floorRequest) {
     let currentClosest = {
       index: null,
       diff: this.maxFloor
     }
-    // check for elevator on that floor first
-    // Check for moving elevators 
-    // check for closest elevator
     this.elevators.forEach((elevator, i) => {
       const floorDiff = Math.abs(elevator.currentFloor - floorRequest)
       if (
@@ -44,6 +47,7 @@ class ElevatorControl {
     this.sendElevator(floorRequest, currentClosest.index)
   }
 
+  // Check if elevator will pass by provided floor
   elevatorWillPassFloor (floor, destinationFloor, direction) {
     if (
       (destinationFloor > floor && direction === 'up') ||
@@ -54,10 +58,12 @@ class ElevatorControl {
     return false
   }
 
+  // Handles a floor requesting an elevator
   handleRequest (requestingFloor) {
     console.log('findClosestElevator')
   }
 
+  // Sends an elevator to a given floor
   sendElevator (destinationFloor, elevatorIndex) {
     this.elevators[elevatorIndex].goToFloor(destinationFloor)
     console.log('sendElevator')
