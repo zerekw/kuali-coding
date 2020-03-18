@@ -4,6 +4,7 @@ class ElevatorControl {
     this.maxFloor = config.floors
     this.elvatorCount = config.elevatorCount
     this.elevators = []
+    this.movingElevators = []
 
     // Init elevators
     this.initElevators(this.elvatorCount)
@@ -19,15 +20,29 @@ class ElevatorControl {
     }
   }
 
-  findClosestElevator (floor) {
-    console.log('findClosestElevator')
+  findClosestElevator (floorRequest) {
+    let currentClosest = {
+      index: null,
+      diff: this.maxFloor
+    }
+    this.elevators.forEach((elevator, i) => {
+      const floorDiff = Math.abs(elevator.currentFloor - floorRequest)
+      if (floorDiff < currentClosest.diff) {
+        currentClosest = {
+          index: i,
+          diff: floorDiff
+        }
+      }
+    })
+    this.sendElevator(floorRequest, currentClosest.index)
   }
 
   handleRequest (requestingFloor) {
     console.log('findClosestElevator')
   }
 
-  sendElevator (destinationFloor) {
+  sendElevator (destinationFloor, elevatorIndex) {
+    this.elevators[elevatorIndex].goToFloor(destinationFloor)
     console.log('sendElevator')
   }
 

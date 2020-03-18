@@ -70,6 +70,7 @@ class Elevator {
       this.stopMoving();
     }
     this.currentFloor = nextFloor;
+    this.floorsPassed = this.floorsPassed + 1
     this.reportCurrentFloor()
     if (this.currentFloor === this.destinationFloor) {
       this.stopMoving();
@@ -80,6 +81,7 @@ class Elevator {
     this.destinationFloor = null
     clearInterval(this.moveInterval)
     this.moveInterval = null
+    this.trips = this.trips + 1
     this.toggleDoor()
   }
 
